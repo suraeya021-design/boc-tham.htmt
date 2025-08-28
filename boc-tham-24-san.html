@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Bốc thăm thứ tự thuyết trình</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 { color: #333; }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 10px;
+      cursor: pointer;
+    }
+    #ketqua {
+      margin-top: 20px;
+      font-size: 18px;
+      color: darkblue;
+      font-weight: bold;
+    }
+    #danhsach {
+      margin-top: 30px;
+      text-align: left;
+      display: inline-block;
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <h1>Bốc thăm thứ tự thuyết trình</h1>
+  <button onclick="bocTham()">Bốc thăm</button>
+  <div id="ketqua"></div>
+  <div id="danhsach"></div>
+
+  <script>
+    // Tạo danh sách 40 người (1 -> 40)
+    let danhSach = Array.from({length: 40}, (_, i) => i + 1);
+    let daBoc = JSON.parse(localStorage.getItem("daBoc")) || [];
+
+    function bocTham() {
+      if (danhSach.length === 0) {
+        alert("Đã bốc hết số thứ tự!");
+        return;
+      }
+      // Chọn ngẫu nhiên 1 số
+      let index = Math.floor(Math.random() * danhSach.length);
+      let so = danhSach.splice(index, 1)[0];
+      daBoc.push(so);
+      localStorage.setItem("daBoc", JSON.stringify(daBoc));
+
+      document.getElementById("ketqua").innerText = 
+        "Bạn đã bốc được số: " + so;
+      hienDanhSach();
+    }
+
+    function hienDanhSach() {
+      let html = "<h3>Kết quả đã bốc:</h3><ol>";
+      daBoc.forEach((s, i) => {
+        html += "<li>Người " + (i+1) + ": số " + s + "</li>";
+      });
+      html += "</ol>";
+      document.getElementById("danhsach").innerHTML = html;
+    }
+
+    // Hiển thị khi load lại trang
+    hienDanhSach();
+  </script>
+</body>
+</html>
